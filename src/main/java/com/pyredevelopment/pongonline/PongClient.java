@@ -11,7 +11,7 @@ import java.util.HashSet;
 
 public class PongClient extends Application {
 
-    private HashSet<KeyCode> keysPressed = new HashSet<>();
+    private final HashSet<KeyCode> keysPressed = new HashSet<>();
 
     public static void main(String[] args) {
         launch();
@@ -27,12 +27,8 @@ public class PongClient extends Application {
         box.getChildren().add(canvas);
 
         Scene scene = new Scene(box);
-        scene.setOnKeyPressed(e -> {
-           keysPressed.add(e.getCode());
-        });
-        scene.setOnKeyReleased(e -> {
-            keysPressed.remove(e.getCode());
-        });
+        scene.setOnKeyPressed(e -> keysPressed.add(e.getCode()));
+        scene.setOnKeyReleased(e -> keysPressed.remove(e.getCode()));
 
         stage.setScene(scene);
         stage.show();
