@@ -10,10 +10,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.BitSet;
 import java.util.HashSet;
 
 public class PongClient extends Application {
+
+    private int PLAYER = 1;
 
     private DatagramSocket socket;
     private InetAddress address;
@@ -43,19 +44,24 @@ public class PongClient extends Application {
             e.printStackTrace();
         }
 
+        StringBuilder binaryByte = new StringBuilder();
         AnimationTimer clock = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                BitSet keyBits = new BitSet(8);
-                if (keysPressed.contains(KeyCode.W)) keyBits.set(0);
-                if (keysPressed.contains(KeyCode.S)) keyBits.set(1);
 
-                byte[] buf = keyBits.toByteArray();
-                System.out.println(buf.length);
+                binaryByte.setLength(0);
+                binaryByte.append("+");
+                binaryByte.append(PLAYER);
+                if (keysPressed.contains(KeyCode.W)) binaryByte.append("1"); else binaryByte.append("0");
+                if (keysPressed.contains(KeyCode.S)) binaryByte.append("1"); else binaryByte.append("0");
+                binaryByte.append("0000");
+
+                byte[] buffer = {Byte.parseByte(binaryByte.toString(), 2)};
 
                 try {
 
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 4445);
+                    DatagramPacket packet
+                            = new DatagramPacket(buffer, 1, InetAddress.getLocalHost(), 4445);
                     socket.send(packet);
                 } catch (IOException e) {
                     e.printStackTrace();
