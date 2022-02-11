@@ -16,7 +16,8 @@ import java.util.HashSet;
 public class PongClient extends Application {
 
     private final int PLAYER = 1;
-
+    private final String IP_ADDRESS = "98.118.61.212";
+    private final int PORT_NUMBER = 9875;
 
     private DatagramSocket socket;
     private final HashSet<KeyCode> keysPressed = new HashSet<>();
@@ -62,7 +63,7 @@ public class PongClient extends Application {
                 try {
 
                     DatagramPacket packet
-                            = new DatagramPacket(buffer, 1, InetAddress.getLocalHost(), 4445);
+                            = new DatagramPacket(buffer, 1, InetAddress.getAllByName(IP_ADDRESS)[0], PORT_NUMBER);
                     socket.send(packet);
 
                     byte[] incomingBuffer = new byte[4];
