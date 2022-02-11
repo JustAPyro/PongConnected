@@ -4,20 +4,21 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.HashSet;
 
 public class PongClient extends Application {
 
-    private int PLAYER = 1;
+    private int PLAYER = 0;
 
     private DatagramSocket socket;
-    private InetAddress address;
     private final HashSet<KeyCode> keysPressed = new HashSet<>();
 
 
@@ -63,6 +64,19 @@ public class PongClient extends Application {
                     DatagramPacket packet
                             = new DatagramPacket(buffer, 1, InetAddress.getLocalHost(), 4445);
                     socket.send(packet);
+
+                    byte[] incomingBuffer = new byte[4];
+                    DatagramPacket incomingPacket = new DatagramPacket(incomingBuffer, 4);
+                    socket.receive(incomingPacket);
+
+                    short[] positions = PongGame.decodeState(incomingBuffer);
+                    System.out.println(positions[0]);
+
+
+
+
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
