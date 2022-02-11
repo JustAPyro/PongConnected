@@ -11,12 +11,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.util.HashSet;
 
 public class PongClient extends Application {
 
-    private int PLAYER = 0;
+    private final int PLAYER = 1;
+
 
     private DatagramSocket socket;
     private final HashSet<KeyCode> keysPressed = new HashSet<>();
@@ -70,10 +70,19 @@ public class PongClient extends Application {
                     socket.receive(incomingPacket);
 
                     short[] positions = PongGame.decodeState(incomingBuffer);
-                    System.out.println(positions[0]);
+                    System.out.println(positions[PLAYER]);
+
+
+                    GraphicsContext gc = canvas.getGraphicsContext2D();
+                    gc.clearRect(0,  0, canvas.getWidth(), canvas.getHeight());
+
+
+                    gc.fillRect(25, positions[0], 20, 50);
+                    gc.fillRect(300, positions[1], 20, 50);
 
 
 
+                    System.out.println("P1: " + positions[0] + "P2: " + positions[1]);
 
 
 

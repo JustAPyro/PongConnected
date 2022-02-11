@@ -11,7 +11,7 @@ public class PongGame {
     private long p1LastUpdate;
     private long p2LastUpdate;
 
-    private final double speed = .02;
+    private final double speed = .05;
 
 
     public PongGame() {
@@ -30,7 +30,7 @@ public class PongGame {
 
         if (updateBits[0] == '0') {
             if (wPress ^ sPress) {
-                int directionMultiplier = wPress ? 1 : -1;
+                int directionMultiplier = wPress ? -1 : 1;
                 PlayerOnePosition += ((currentTime - p1LastUpdate) * speed) * directionMultiplier;
             }
             p1LastUpdate = currentTime;
