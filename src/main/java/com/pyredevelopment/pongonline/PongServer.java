@@ -43,7 +43,7 @@ public class PongServer extends Thread{
                 System.out.println(clientID);
                 String inputs = String.format("%07d", Integer.parseInt(Integer.toBinaryString(incomingPacket.getData()[0])));
                 game.updateState(clientID, inputs);
-                DatagramPacket packetOut = new DatagramPacket(game.getState(), 4, address, port);
+                DatagramPacket packetOut = new DatagramPacket(game.getState(), 8, address, port);
                 socket.send(packetOut);
 
 
