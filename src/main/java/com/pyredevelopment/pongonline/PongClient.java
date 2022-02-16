@@ -8,14 +8,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.HashSet;
 
 public class PongClient extends Application {
 
-    private final int PLAYER = 1;
+    private final int PLAYER = 0;
     private final String IP_ADDRESS = "98.118.61.212";
     private final int PORT_NUMBER = 9875;
 
@@ -63,7 +62,7 @@ public class PongClient extends Application {
                 try {
 
                     DatagramPacket packet
-                            = new DatagramPacket(buffer, 1, InetAddress.getAllByName(IP_ADDRESS)[0], PORT_NUMBER);
+                            = new DatagramPacket(buffer, 1, InetAddress.getLocalHost(), PORT_NUMBER);
                     socket.send(packet);
 
                     byte[] incomingBuffer = new byte[4];
@@ -71,8 +70,6 @@ public class PongClient extends Application {
                     socket.receive(incomingPacket);
 
                     short[] positions = PongGame.decodeState(incomingBuffer);
-                    System.out.println(positions[PLAYER]);
-
 
                     GraphicsContext gc = canvas.getGraphicsContext2D();
                     gc.clearRect(0,  0, canvas.getWidth(), canvas.getHeight());

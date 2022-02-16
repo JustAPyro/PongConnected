@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.BitSet;
 
 public class PongServer extends Thread{
 
@@ -13,6 +12,7 @@ public class PongServer extends Thread{
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[256];
+    DatagramPacket incomingPacket;
 
     public static void main(String[] args) {
         new PongServer().start();
@@ -20,8 +20,9 @@ public class PongServer extends Thread{
 
     public PongServer() {
         game = new PongGame();
+        incomingPacket = new DatagramPacket(buf, buf.length);
         try {
-            socket = new DatagramSocket(4445);
+            socket = new DatagramSocket(9875);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -32,15 +33,16 @@ public class PongServer extends Thread{
     @Override
     public void run() {
         while (true) {
-            DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
-                socket.receive(packet);
-                InetAddress address = packet.getAddress();
-                int port = packet.getPort();
 
+                socket.receive(incomingPacket);
+                InetAddress address = incomingPacket.getAddress();
+                int port = incomingPacket.getPort();
+                String clientID = address.toString() + ":" + port;
 
-                String inputs = String.format("%07d", Integer.parseInt(Integer.toBinaryString(packet.getData()[0])));
-                game.updateState(inputs);
+                System.out.println(clientID);
+                String inputs = String.format("%07d", Integer.parseInt(Integer.toBinaryString(incomingPacket.getData()[0])));
+                game.updateState(clientID, inputs);
                 DatagramPacket packetOut = new DatagramPacket(game.getState(), 4, address, port);
                 socket.send(packetOut);
 

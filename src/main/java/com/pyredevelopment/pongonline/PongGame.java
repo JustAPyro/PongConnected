@@ -5,13 +5,14 @@ import java.nio.ByteOrder;
 
 public class PongGame {
 
-
+    private String playerOneID = null;
+    private String playerTwoID = null;
     private double PlayerOnePosition;
     private double PlayerTwoPosition;
     private long p1LastUpdate;
     private long p2LastUpdate;
 
-    private final double speed = .05;
+    private final double speed = 1;
 
 
     public PongGame() {
@@ -21,21 +22,28 @@ public class PongGame {
         p2LastUpdate = System.currentTimeMillis();
     }
 
-    public void updateState(String update) {
+    public void updateState(String clientID, String update) {
+
+        if (playerOneID == null)
+            playerOneID = clientID;
+        else if (playerTwoID == null && !playerOneID.equals(clientID))
+            playerTwoID = clientID;
+
+
         char[] updateBits = update.toCharArray();
         boolean wPress = updateBits[1] != '0';
         boolean sPress = updateBits[2] != '0';
         long currentTime = System.currentTimeMillis();
 
 
-        if (updateBits[0] == '0') {
+        if (clientID.equals(playerOneID)) {
             if (wPress ^ sPress) {
                 int directionMultiplier = wPress ? -1 : 1;
                 PlayerOnePosition += ((currentTime - p1LastUpdate) * speed) * directionMultiplier;
             }
             p1LastUpdate = currentTime;
         }
-        else {
+        else if (clientID.equals(playerTwoID)){
             if (wPress ^ sPress) {
                 int directionMultiplier = wPress ? 1 : -1;
                 PlayerTwoPosition += ((currentTime - p1LastUpdate) * speed) * directionMultiplier;
@@ -43,7 +51,7 @@ public class PongGame {
             p2LastUpdate = currentTime;
         }
 
-        System.out.println("P1Pos: " + PlayerOnePosition + " | P2Pos: " + PlayerTwoPosition);
+        //System.out.println("P1Pos: " + PlayerOnePosition + " | P2Pos: " + PlayerTwoPosition);
     }
 
     public static short[] decodeState(byte[] incomingBytes) {
