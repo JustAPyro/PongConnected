@@ -8,26 +8,29 @@ import java.net.SocketException;
 
 public class PongServer extends Thread{
 
-    PongGame game;
-    private DatagramSocket socket;
-    private boolean running;
-    private byte[] buf = new byte[256];
-    DatagramPacket incomingPacket;
+    // The main game object
+    private final PongGame game;
 
+    // Socket for network communication
+    private DatagramSocket socket;
+
+    // Creating a datagram packet for incoming data and create a byte buffer
+    private final byte[] incomingBuffer = new byte[1];
+    private final DatagramPacket incomingPacket;
+
+    // Driver method
     public static void main(String[] args) {
         new PongServer().start();
     }
 
     public PongServer() {
         game = new PongGame();
-        incomingPacket = new DatagramPacket(buf, buf.length);
+        incomingPacket = new DatagramPacket(incomingBuffer, 1);
         try {
             socket = new DatagramSocket(9875);
         } catch (SocketException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override

@@ -91,7 +91,6 @@ public class PongGame {
 
     }
 
-
     public byte[] getState() {
         ByteBuffer p1Buf = ByteBuffer.allocate(2);
         ByteBuffer p2Buf = ByteBuffer.allocate(2);
