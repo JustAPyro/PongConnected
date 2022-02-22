@@ -72,7 +72,9 @@ public class PongClient extends Application {
 
                     byte[] incomingBuffer = new byte[8];
                     incomingPacket = new DatagramPacket(incomingBuffer, 8);
+                    System.out.println("Sen.");
                     socket.receive(incomingPacket);
+                    System.out.println("Rec.");
 
                     short[] positions = PongGame.decodeState(incomingBuffer);
 

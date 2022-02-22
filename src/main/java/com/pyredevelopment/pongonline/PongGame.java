@@ -2,6 +2,8 @@ package com.pyredevelopment.pongonline;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import com.pyredevelopment.pongonline.network.Server;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -11,7 +13,7 @@ public class PongGame implements Runnable {
 
     // These variables determine how often certain method calls happen in game loop
     private final static double UPS = 60; // Updates per second
-    private final static double PPS = 3;  // Pushes per second (Server)
+    private final static double PPS = 60;  // Pushes per second (Server)
 
     // Create a logger for this file to track its behavior.
     private final static Logger logger = LogManager.getLogger(PongGame.class);
@@ -170,6 +172,10 @@ public class PongGame implements Runnable {
         p2LastUpdate = System.currentTimeMillis();
         ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
 
+        // Create a new server
+        Server networkServer = new Server(9875);
+        networkServer.start();
+
         // Log the activation of the tGameLoop thread
         logger.info("Game Loop Thread started successfully.");
 
@@ -209,7 +215,7 @@ public class PongGame implements Runnable {
             }
 
             if (deltaP >= 1) {
-                // Push to clients
+                networkServer.push(getState());
                 pushes++;
                 deltaP--;
             }
