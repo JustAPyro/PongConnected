@@ -34,7 +34,7 @@ public class PongGame implements Runnable {
         PlayerTwoPosition = (double) PongEnv.WIN_HEIGHT/2;
         p1LastUpdate = System.currentTimeMillis();
         p2LastUpdate = System.currentTimeMillis();
-        ballPosition = new double[]{100, 100};
+        ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
     }
 
     public void updateState(String clientID, String update) {
@@ -72,7 +72,7 @@ public class PongGame implements Runnable {
     // decode an incoming byte array
     public static short[] decodeState(byte[] incomingBytes) {
 
-        System.out.println(incomingBytes[0]);
+        System.out.println(incomingBytes[6] + " | " + incomingBytes[7]);
 
         ByteBuffer p1Buf = ByteBuffer.allocate(2);
         ByteBuffer p2Buf = ByteBuffer.allocate(2);
@@ -155,6 +155,8 @@ public class PongGame implements Runnable {
         finalByte[5] = bxByte[1];
         finalByte[6] = byByte[0];
         finalByte[7] = byByte[1];
+
+        System.out.println(finalByte[6] + " | " + finalByte[7]);
 
         return finalByte;
     }

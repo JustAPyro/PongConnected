@@ -71,7 +71,7 @@ public class PongClient extends Application {
                     socket.send(packet);
 
                     byte[] incomingBuffer = new byte[8];
-                    incomingPacket = new DatagramPacket(incomingBuffer, 4);
+                    incomingPacket = new DatagramPacket(incomingBuffer, 8);
                     socket.receive(incomingPacket);
 
                     short[] positions = PongGame.decodeState(incomingBuffer);
@@ -113,7 +113,7 @@ public class PongClient extends Application {
     private void drawPaddle(GraphicsContext gc, int x, int y) {
 
         // Draw the rectangle for the paddle
-        gc.fillRect(x - PADDLE_WIDTH/2, y - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT);
+        gc.fillRect(x - (double) PADDLE_WIDTH/2, y - (double) PADDLE_HEIGHT/2, PADDLE_WIDTH, PADDLE_HEIGHT);
 
     }
 
