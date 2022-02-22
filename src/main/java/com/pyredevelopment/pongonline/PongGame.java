@@ -30,11 +30,9 @@ public class PongGame implements Runnable {
 
 
     public PongGame() {
-        PlayerOnePosition = (double) PongEnv.WIN_HEIGHT/2;
-        PlayerTwoPosition = (double) PongEnv.WIN_HEIGHT/2;
-        p1LastUpdate = System.currentTimeMillis();
-        p2LastUpdate = System.currentTimeMillis();
-        ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
+        // Start a new game thread
+        Thread gameThread = new Thread(this, "tGame");
+        gameThread.start();
     }
 
     public void updateState(String clientID, String update) {
@@ -164,7 +162,15 @@ public class PongGame implements Runnable {
 
     @Override
     public void run() {
-// Log the activation of the tGameLoop thread
+
+        // Set variables
+        PlayerOnePosition = (double) PongEnv.WIN_HEIGHT/2;
+        PlayerTwoPosition = (double) PongEnv.WIN_HEIGHT/2;
+        p1LastUpdate = System.currentTimeMillis();
+        p2LastUpdate = System.currentTimeMillis();
+        ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
+
+        // Log the activation of the tGameLoop thread
         logger.info("Game Loop Thread started successfully.");
 
         // Log the initial time the loop started
@@ -207,8 +213,6 @@ public class PongGame implements Runnable {
                 pushes++;
                 deltaP--;
             }
-
-
         }
     }
 }
