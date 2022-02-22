@@ -11,6 +11,7 @@ import java.net.SocketException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server extends Thread{
 
@@ -19,7 +20,7 @@ public class Server extends Thread{
     private final int port;
     private DatagramSocket socket;
 
-    private Set<String> clients;
+    private ConcurrentHashMap<String, boolean[]> clientPresses;
 
     public Server(int port) {
         this.port = port;
@@ -28,7 +29,7 @@ public class Server extends Thread{
     public void push(byte[] packet) {
 
         try {
-            for (String clientAddress : clients) {
+            for (String clientAddress : clientPresses.keySet()) {
                 System.out.println("Pushing!");
                 String[] information = clientAddress.split(":");
                 InetAddress address = InetAddress.getByName(information[0].replace("/", ""));
@@ -55,7 +56,7 @@ public class Server extends Thread{
             socket = new DatagramSocket(port);
 
             // Synchronize hashset
-            clients = Collections.synchronizedSet(new HashSet<>());
+            clientPresses = new ConcurrentHashMap<>();
 
             while (true) {
 
@@ -70,8 +71,14 @@ public class Server extends Thread{
                 // Construct the client ID using address:port (Should be unique)
                 String clientID = address.toString() + ":" + port;
 
-                clients.add(clientID);
-                System.out.println("New client! At " + clientID);
+                // Format the incoming packet
+                String inputs = String.format("%07d", Integer.parseInt(Integer.toBinaryString(incomingPacket.getData()[0])));
+                char[] chars = inputs.toCharArray();
+                boolean[] keyPress = new boolean[chars.length];
+                for (int i = 0; i < chars.length; i++)
+                    keyPress[i] = chars[i] == '0';
+
+                clientPresses.put(clientID, keyPress);
 
             }
 
