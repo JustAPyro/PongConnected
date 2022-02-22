@@ -21,7 +21,7 @@ public class PongGame {
         PlayerTwoPosition = (double) PongEnv.WIN_HEIGHT/2;
         p1LastUpdate = System.currentTimeMillis();
         p2LastUpdate = System.currentTimeMillis();
-        ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
+        ballPosition = new double[]{100, 100};
     }
 
     public void updateState(String clientID, String update) {
@@ -56,12 +56,16 @@ public class PongGame {
         //System.out.println("P1Pos: " + PlayerOnePosition + " | P2Pos: " + PlayerTwoPosition);
     }
 
+    // decode an incoming byte array
     public static short[] decodeState(byte[] incomingBytes) {
+
+        System.out.println(incomingBytes[0]);
 
         ByteBuffer p1Buf = ByteBuffer.allocate(2);
         ByteBuffer p2Buf = ByteBuffer.allocate(2);
         ByteBuffer ballX = ByteBuffer.allocate(2);
         ByteBuffer ballY = ByteBuffer.allocate(2);
+
         p1Buf.order(ByteOrder.LITTLE_ENDIAN);
         p2Buf.order(ByteOrder.LITTLE_ENDIAN);
         ballX.order(ByteOrder.LITTLE_ENDIAN);
@@ -87,10 +91,12 @@ public class PongGame {
         shortPositions[2] = ballX.getShort();
         shortPositions[3] = ballY.getShort();
 
+
         return shortPositions;
 
     }
 
+    // Get the state of the game as a byte array to send
     public byte[] getState() {
         ByteBuffer p1Buf = ByteBuffer.allocate(2);
         ByteBuffer p2Buf = ByteBuffer.allocate(2);

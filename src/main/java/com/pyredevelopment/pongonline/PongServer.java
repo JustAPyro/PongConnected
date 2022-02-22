@@ -9,51 +9,56 @@ import java.net.SocketException;
 public class PongServer extends Thread{
 
     // The main game object
-    private final PongGame game;
+    private PongGame game;
 
     // Socket for network communication
     private DatagramSocket socket;
 
     // Creating a datagram packet for incoming data and create a byte buffer
     private final byte[] incomingBuffer = new byte[1];
-    private final DatagramPacket incomingPacket;
+    private final DatagramPacket incomingPacket = new DatagramPacket(incomingBuffer, 1);;
 
     // Driver method
     public static void main(String[] args) {
         new PongServer().start();
     }
 
-    public PongServer() {
-        game = new PongGame();
-        incomingPacket = new DatagramPacket(incomingBuffer, 1);
-        try {
-            socket = new DatagramSocket(9875);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void run() {
-        while (true) {
-            try {
+        try {
 
+            // Initialize a new game
+            game = new PongGame();
+
+            // Create a new socket for network communication
+            socket = new DatagramSocket(9875);
+
+            // Receiving loop
+            while (true) {
+
+                // Recieve incoming data
                 socket.receive(incomingPacket);
+
+                // Collect the address and port of the packet
                 InetAddress address = incomingPacket.getAddress();
                 int port = incomingPacket.getPort();
+
+                // Construct the client ID using address:port (Should be unique)
                 String clientID = address.toString() + ":" + port;
 
-                System.out.println(clientID);
+                // Format the incoming packet
                 String inputs = String.format("%07d", Integer.parseInt(Integer.toBinaryString(incomingPacket.getData()[0])));
+
+                // Update the gamestate
                 game.updateState(clientID, inputs);
                 DatagramPacket packetOut = new DatagramPacket(game.getState(), 8, address, port);
                 socket.send(packetOut);
 
 
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        }
+        catch (Exception e) {
+
         }
     }
 
