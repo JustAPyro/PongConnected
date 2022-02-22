@@ -2,8 +2,19 @@ package com.pyredevelopment.pongonline;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-public class PongGame {
+public class PongGame implements Runnable {
+
+    // - - - - - - - - - - Static Variables - - - - - - - - - -
+
+    // These variables determine how often certain method calls happen in game loop
+    private final static double UPS = 60; // Updates per second
+    private final static double PPS = 3;  // Pushes per second (Server)
+
+    // Create a logger for this file to track its behavior.
+    private final static Logger logger = LogManager.getLogger(PongGame.class);
 
     private String playerOneID = null;
     private String playerTwoID = null;
@@ -14,6 +25,8 @@ public class PongGame {
     private long p2LastUpdate;
 
     private final double speed = .75;
+
+    private boolean loopRunning = false;
 
 
     public PongGame() {
@@ -147,4 +160,53 @@ public class PongGame {
     }
 
 
+    @Override
+    public void run() {
+// Log the activation of the tGameLoop thread
+        logger.info("Game Loop Thread started successfully.");
+
+        // Log the initial time the loop started
+        long initialTime = System.nanoTime();
+
+        // Declare the time triggers
+        final double timeU = 1000000000 / UPS;
+        final double timeP = 1000000000 / PPS;
+
+        // Delta/change in time for triggers
+        double deltaU = 0, deltaP = 0;
+
+        // Information about the game loop
+        int updates = 0, pushes = 0;
+
+        // Main game processing loop
+        loopRunning = true;
+        while (loopRunning) {
+
+            // Save the current time
+            long currentTime = System.nanoTime();
+
+            // Increment our delta times
+            deltaU += (currentTime - initialTime) / timeU;
+            deltaP += (currentTime - initialTime) / timeP;
+
+            // Reset the initial time for the next iteration
+            initialTime = currentTime;
+
+            // deltaU(update) is greater than 1 execute that
+            if (deltaU >= 1) {
+                // getInput();
+                // update();
+                updates++;
+                deltaU--;
+            }
+
+            if (deltaP >= 1) {
+                // Push to clients
+                pushes++;
+                deltaP--;
+            }
+
+
+        }
+    }
 }
