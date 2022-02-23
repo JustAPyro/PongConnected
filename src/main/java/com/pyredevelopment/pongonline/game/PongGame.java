@@ -20,13 +20,8 @@ public class PongGame implements Runnable {
     // Create a logger for this file to track its behavior.
     private final static Logger logger = LogManager.getLogger(PongGame.class);
 
-    private String playerOneID = null;
-    private String playerTwoID = null;
-    private double PlayerOnePosition;
-    private double PlayerTwoPosition;
     private double[] ballPosition;
-    private long p1LastUpdate;
-    private long p2LastUpdate;
+
 
     private PongPlayer[] players;
 
@@ -168,10 +163,6 @@ public class PongGame implements Runnable {
         players[1] = new PongPlayer((double) PongEnv.WIN_HEIGHT/2);
 
         // Set variables
-        PlayerOnePosition = (double) PongEnv.WIN_HEIGHT/2;
-        PlayerTwoPosition = (double) PongEnv.WIN_HEIGHT/2;
-        p1LastUpdate = System.currentTimeMillis();
-        p2LastUpdate = System.currentTimeMillis();
         ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
 
         // Create a new server
