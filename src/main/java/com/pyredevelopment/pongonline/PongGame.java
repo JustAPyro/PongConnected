@@ -14,7 +14,7 @@ public class PongGame implements Runnable {
 
     // These variables determine how often certain method calls happen in game loop
     private final static double UPS = 60; // Updates per second
-    private final static double PPS = 60;  // Pushes per second (Server)
+    private final static double PPS = 3;  // Pushes per second (Server)
 
     // Create a logger for this file to track its behavior.
     private final static Logger logger = LogManager.getLogger(PongGame.class);
@@ -75,8 +75,6 @@ public class PongGame implements Runnable {
     // decode an incoming byte array
     public static short[] decodeState(byte[] incomingBytes) {
 
-        System.out.println(incomingBytes[6] + " | " + incomingBytes[7]);
-
         ByteBuffer p1Buf = ByteBuffer.allocate(2);
         ByteBuffer p2Buf = ByteBuffer.allocate(2);
         ByteBuffer ballX = ByteBuffer.allocate(2);
@@ -123,8 +121,8 @@ public class PongGame implements Runnable {
         ballX.order(ByteOrder.LITTLE_ENDIAN);
         ballY.order(ByteOrder.LITTLE_ENDIAN);
 
-        short p1Short = (short) Math.round(PlayerOnePosition);
-        short p2Short = (short) Math.round(PlayerTwoPosition);
+        short p1Short = (short) Math.round(players[0].getPosition());
+        short p2Short = (short) Math.round(players[1].getPosition());
         short ballXShort = (short) Math.round(ballPosition[0]);
         short ballYShort = (short) Math.round(ballPosition[1]);
 
@@ -159,8 +157,6 @@ public class PongGame implements Runnable {
         finalByte[6] = byByte[0];
         finalByte[7] = byByte[1];
 
-        System.out.println(finalByte[6] + " | " + finalByte[7]);
-
         return finalByte;
     }
 
@@ -180,9 +176,8 @@ public class PongGame implements Runnable {
         else if (players[1].getID().equals(playerID)) {
             return players[1];
         }
-        else {
-            return null;
-        }
+
+            throw new ArithmeticException("TOO MANY PLAYERS");
 
     }
 
@@ -228,6 +223,7 @@ public class PongGame implements Runnable {
         // Information about the game loop
         int updates = 0, pushes = 0;
 
+
         // Main game processing loop
         loopRunning = true;
         while (loopRunning) {
@@ -246,12 +242,13 @@ public class PongGame implements Runnable {
             if (deltaU >= 1) {
                 ConcurrentHashMap<String, boolean[]> input = networkServer.getAllInput();
                 update(input);
+                networkServer.push(getState());
                 updates++;
                 deltaU--;
             }
 
             if (deltaP >= 1) {
-                networkServer.push(getState());
+                //networkServer.push(getState());
                 pushes++;
                 deltaP--;
             }

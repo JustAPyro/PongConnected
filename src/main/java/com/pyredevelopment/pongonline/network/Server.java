@@ -30,7 +30,6 @@ public class Server extends Thread{
 
         try {
             for (String clientAddress : clientPresses.keySet()) {
-                System.out.println("Pushing!");
                 String[] information = clientAddress.split(":");
                 InetAddress address = InetAddress.getByName(information[0].replace("/", ""));
                 int port = Integer.parseInt(information[1]);
@@ -43,6 +42,10 @@ public class Server extends Thread{
             System.out.println("Couldn't find address");
         }
 
+    }
+
+    public ConcurrentHashMap<String, boolean[]> getAllInput() {
+        return clientPresses;
     }
 
     @Override
