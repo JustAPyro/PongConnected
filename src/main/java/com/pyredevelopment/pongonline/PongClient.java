@@ -1,5 +1,6 @@
 package com.pyredevelopment.pongonline;
 
+import com.pyredevelopment.pongonline.network.Client;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,12 +19,14 @@ import static com.pyredevelopment.pongonline.PongEnv.*;
 public class PongClient extends Application {
 
     private final int PLAYER = 0;
-    private final String IP_ADDRESS = "98.118.61.212";
+    private final String IP_ADDRESS = "localhost";
     private final int PORT_NUMBER = 9875;
 
     private DatagramPacket incomingPacket;
     private DatagramSocket socket;
     private final HashSet<KeyCode> keysPressed = new HashSet<>();
+
+    private Client networkClient;
 
 
     public static void main(String[] args) {
@@ -50,6 +53,9 @@ public class PongClient extends Application {
             e.printStackTrace();
         }
 
+        networkClient = new Client(IP_ADDRESS, PORT_NUMBER);
+        networkClient.start();
+
         StringBuilder binaryByte = new StringBuilder();
         AnimationTimer clock = new AnimationTimer() {
             @Override
@@ -66,9 +72,13 @@ public class PongClient extends Application {
 
                 try {
 
+                    networkClient.push(buffer);
+                    /*
                     DatagramPacket packet
                             = new DatagramPacket(buffer, 1, InetAddress.getLocalHost(), PORT_NUMBER);
                     socket.send(packet);
+                    */
+
 
                     byte[] incomingBuffer = new byte[8];
                     incomingPacket = new DatagramPacket(incomingBuffer, 8);
@@ -91,7 +101,6 @@ public class PongClient extends Application {
                     drawPaddle(gc, (int) (canvas.getWidth()-PADDLE_PADDING), positions[1]);
                     drawBall(gc, positions[2], positions[3]);
 
-                    System.out.println("P1: " + positions[0] + "P2: " + positions[1]);
 
 
 
