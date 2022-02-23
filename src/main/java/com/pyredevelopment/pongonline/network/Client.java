@@ -10,6 +10,8 @@ public class Client extends Thread {
 
     private DatagramSocket socket;
 
+    private byte[] receivedData;
+
     public Client(String ipAddress, int portNumber) {
         try {
 
@@ -22,6 +24,14 @@ public class Client extends Thread {
             e.printStackTrace();
         }
 
+    }
+
+    public boolean hasData() {
+        return receivedData != null;
+    }
+
+    public byte[] getReceivedData() {
+        return receivedData;
     }
 
     public void push(byte[] packet) {
@@ -42,9 +52,8 @@ public class Client extends Thread {
             final DatagramPacket incomingPacket = new DatagramPacket(incomingBuffer, 8);
 
             while (true) {
-                System.out.println("Listening");
                 socket.receive(incomingPacket);
-                System.out.println("Rec");
+                receivedData = incomingPacket.getData();
             }
 
         } catch (IOException e) {

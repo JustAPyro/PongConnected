@@ -70,21 +70,23 @@ public class PongClient extends Application {
 
                 byte[] buffer = {Byte.parseByte(binaryByte.toString(), 2)};
 
-                try {
+
 
                     networkClient.push(buffer);
                     /*
                     DatagramPacket packet
                             = new DatagramPacket(buffer, 1, InetAddress.getLocalHost(), PORT_NUMBER);
                     socket.send(packet);
-                    */
+
 
 
                     byte[] incomingBuffer = new byte[8];
                     incomingPacket = new DatagramPacket(incomingBuffer, 8);
                     socket.receive(incomingPacket);
-
-                    short[] positions = PongGame.decodeState(incomingBuffer);
+*/
+                    short[] positions = new short[4];
+                    if (networkClient.hasData())
+                        positions = PongGame.decodeState(networkClient.getReceivedData());
 
                     GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -104,9 +106,7 @@ public class PongClient extends Application {
 
 
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
         };
         clock.start();
