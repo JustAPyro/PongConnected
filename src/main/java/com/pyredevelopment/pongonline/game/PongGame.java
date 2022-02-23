@@ -150,6 +150,8 @@ public class PongGame implements Runnable {
         for (String player : input.keySet()) {
             getPlayer(player).update(input.get(player));
         }
+
+        ball.update();
     }
 
     @Override
