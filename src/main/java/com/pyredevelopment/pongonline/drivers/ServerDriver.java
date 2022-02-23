@@ -8,4 +8,6 @@ public class ServerDriver {
         new PongGame();
     }
 
+    public ServerDriver() { new PongGame(); }
+
 }
