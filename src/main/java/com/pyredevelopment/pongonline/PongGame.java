@@ -2,6 +2,7 @@ package com.pyredevelopment.pongonline;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.pyredevelopment.pongonline.network.Server;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,8 @@ public class PongGame implements Runnable {
     private double[] ballPosition;
     private long p1LastUpdate;
     private long p2LastUpdate;
+
+    private PongPlayer[] players;
 
     private final double speed = .75;
 
@@ -161,9 +164,26 @@ public class PongGame implements Runnable {
         return finalByte;
     }
 
+    private PongPlayer getPlayer(String playerID) {
+
+
+
+    }
+
+    private void update(ConcurrentHashMap<String, boolean[]> input) {
+
+        for (String player : input.keySet()) {
+            getPlayer(player).update(input.get(player));
+        }
+    }
 
     @Override
     public void run() {
+
+        // Create players
+        players = new PongPlayer[2];
+        players[0] = new PongPlayer((double) PongEnv.WIN_HEIGHT/2);
+        players[1] = new PongPlayer((double) PongEnv.WIN_HEIGHT/2);
 
         // Set variables
         PlayerOnePosition = (double) PongEnv.WIN_HEIGHT/2;
@@ -208,8 +228,8 @@ public class PongGame implements Runnable {
 
             // deltaU(update) is greater than 1 execute that
             if (deltaU >= 1) {
-                // getInput();
-                // update();
+                ConcurrentHashMap<String, boolean[]> input = networkServer.getAllInput();
+                update(input);
                 updates++;
                 deltaU--;
             }
