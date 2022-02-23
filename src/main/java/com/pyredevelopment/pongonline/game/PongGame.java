@@ -1,9 +1,10 @@
-package com.pyredevelopment.pongonline;
+package com.pyredevelopment.pongonline.game;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.pyredevelopment.pongonline.PongEnv;
 import com.pyredevelopment.pongonline.network.Server;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -40,37 +41,7 @@ public class PongGame implements Runnable {
         gameThread.start();
     }
 
-    public void updateState(String clientID, String update) {
 
-        if (playerOneID == null)
-            playerOneID = clientID;
-        else if (playerTwoID == null && !playerOneID.equals(clientID))
-            playerTwoID = clientID;
-
-
-        char[] updateBits = update.toCharArray();
-        boolean wPress = updateBits[1] != '0';
-        boolean sPress = updateBits[2] != '0';
-        long currentTime = System.currentTimeMillis();
-
-
-        if (clientID.equals(playerOneID)) {
-            if (wPress ^ sPress) {
-                int directionMultiplier = wPress ? -1 : 1;
-                PlayerOnePosition += ((currentTime - p1LastUpdate) * speed) * directionMultiplier;
-            }
-            p1LastUpdate = currentTime;
-        }
-        else if (clientID.equals(playerTwoID)){
-            if (wPress ^ sPress) {
-                int directionMultiplier = wPress ? -1 : 1;
-                PlayerTwoPosition += ((currentTime - p2LastUpdate) * speed) * directionMultiplier;
-            }
-            p2LastUpdate = currentTime;
-        }
-
-        //System.out.println("P1Pos: " + PlayerOnePosition + " | P2Pos: " + PlayerTwoPosition);
-    }
 
     // decode an incoming byte array
     public static short[] decodeState(byte[] incomingBytes) {

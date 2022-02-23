@@ -1,10 +1,10 @@
-package com.pyredevelopment.pongonline;
+package com.pyredevelopment.pongonline.game;
 
 public class PongPlayer {
 
     private String playerID;
     private double position;
-    private final int speed = 1;
+    private final double speed = 3;
 
     public PongPlayer(double position) {
         this.position = position;

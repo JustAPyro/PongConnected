@@ -1,6 +1,6 @@
 package com.pyredevelopment.pongonline.drivers;
 
-import com.pyredevelopment.pongonline.PongGame;
+import com.pyredevelopment.pongonline.game.PongGame;
 
 public class ServerDriver {
 

@@ -1,5 +1,6 @@
 package com.pyredevelopment.pongonline;
 
+import com.pyredevelopment.pongonline.game.PongGame;
 import com.pyredevelopment.pongonline.network.Client;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -8,9 +9,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import java.io.IOException;
+
 import java.net.*;
 import java.util.HashSet;
 
