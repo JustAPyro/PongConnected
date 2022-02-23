@@ -9,9 +9,14 @@ public class PongPlayer {
         this.position = position;
     }
 
+    public void setID(String playerID) {
+        this.playerID = playerID;
+    }
+
     public String getID() {
         return playerID;
     }
+
     public void update(boolean[] inputs) {
 
     }

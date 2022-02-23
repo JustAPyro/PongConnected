@@ -166,7 +166,23 @@ public class PongGame implements Runnable {
 
     private PongPlayer getPlayer(String playerID) {
 
-
+        if (players[0].getID() == null) {
+            players[0].setID(playerID);
+            return players[0];
+        }
+        else if (players[0].getID().equals(playerID)) {
+            return players[0];
+        }
+        else if (players[1].getID() == null) {
+            players[1].setID(playerID);
+            return players[1];
+        }
+        else if (players[1].getID().equals(playerID)) {
+            return players[1];
+        }
+        else {
+            return null;
+        }
 
     }
 
