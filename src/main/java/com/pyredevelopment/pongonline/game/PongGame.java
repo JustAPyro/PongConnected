@@ -20,9 +20,7 @@ public class PongGame implements Runnable {
     // Create a logger for this file to track its behavior.
     private final static Logger logger = LogManager.getLogger(PongGame.class);
 
-    private double[] ballPosition;
-
-
+    private PongBall ball;
     private PongPlayer[] players;
 
     private final double speed = .75;
@@ -89,8 +87,8 @@ public class PongGame implements Runnable {
 
         short p1Short = (short) Math.round(players[0].getPosition());
         short p2Short = (short) Math.round(players[1].getPosition());
-        short ballXShort = (short) Math.round(ballPosition[0]);
-        short ballYShort = (short) Math.round(ballPosition[1]);
+        short ballXShort = (short) Math.round(ball.getX());
+        short ballYShort = (short) Math.round(ball.getY());
 
 
         p1Buf.putShort(p1Short);
@@ -163,7 +161,7 @@ public class PongGame implements Runnable {
         players[1] = new PongPlayer((double) PongEnv.WIN_HEIGHT/2);
 
         // Set variables
-        ballPosition = new double[]{(double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2};
+        ball = new PongBall((double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2);
 
         // Create a new server
         Server networkServer = new Server(9875);
