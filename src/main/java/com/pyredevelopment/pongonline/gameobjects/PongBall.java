@@ -1,4 +1,4 @@
-package com.pyredevelopment.pongonline.game;
+package com.pyredevelopment.pongonline.gameobjects;
 
 import com.pyredevelopment.pongonline.PongEnv;
 
@@ -27,7 +27,6 @@ public class PongBall {
         this.x = x;
         this.y = y;
 
-        GameManager.get().register(this);
     }
 
     /**

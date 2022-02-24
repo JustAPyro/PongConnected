@@ -5,6 +5,8 @@ import java.nio.ByteOrder;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.pyredevelopment.pongonline.PongEnv;
+import com.pyredevelopment.pongonline.gameobjects.PongBall;
+import com.pyredevelopment.pongonline.gameobjects.PongPaddle;
 import com.pyredevelopment.pongonline.network.Server;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +23,7 @@ public class PongGame implements Runnable {
     private final static Logger logger = LogManager.getLogger(PongGame.class);
 
     private PongBall ball;
-    private PongPlayer[] players;
+    private PongPaddle[] players;
 
     private final double speed = .75;
 
@@ -124,7 +126,7 @@ public class PongGame implements Runnable {
         return finalByte;
     }
 
-    private PongPlayer getPlayer(String playerID) {
+    private PongPaddle getPlayer(String playerID) {
 
         if (players[0].getID() == null) {
             players[0].setID(playerID);
@@ -158,9 +160,9 @@ public class PongGame implements Runnable {
     public void run() {
 
         // Create players
-        players = new PongPlayer[2];
-        players[0] = new PongPlayer((double) PongEnv.WIN_HEIGHT/2);
-        players[1] = new PongPlayer((double) PongEnv.WIN_HEIGHT/2);
+        players = new PongPaddle[2];
+        players[0] = new PongPaddle((double) PongEnv.WIN_HEIGHT/2);
+        players[1] = new PongPaddle((double) PongEnv.WIN_HEIGHT/2);
 
         // Set variables
         ball = new PongBall((double) PongEnv.WIN_WIDTH/2, (double) PongEnv.WIN_HEIGHT/2);

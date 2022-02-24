@@ -8,4 +8,6 @@ module com.pyredevelopment.pongonline {
     exports com.pyredevelopment.pongonline;
     exports com.pyredevelopment.pongonline.game;
     opens com.pyredevelopment.pongonline.game to javafx.fxml;
+    exports com.pyredevelopment.pongonline.gameobjects;
+    opens com.pyredevelopment.pongonline.gameobjects to javafx.fxml;
 }
