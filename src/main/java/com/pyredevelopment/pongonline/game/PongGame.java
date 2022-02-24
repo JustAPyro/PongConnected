@@ -187,7 +187,6 @@ public class PongGame implements Runnable {
         // Information about the game loop
         int updates = 0, pushes = 0;
 
-
         // Main game processing loop
         loopRunning = true;
         while (loopRunning) {

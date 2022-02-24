@@ -1,5 +1,7 @@
 package com.pyredevelopment.pongonline.gameobjects;
 
+import com.pyredevelopment.pongonline.game.GameManager;
+
 public class PongPaddle {
 
     private String playerID;
@@ -7,7 +9,12 @@ public class PongPaddle {
     private final double speed = 3;
 
     public PongPaddle(double position) {
+
+        // Save the starting position
         this.position = position;
+
+        // Register this paddle with the game manager
+        GameManager.get().register(this);
     }
 
     public void setID(String playerID) {

@@ -1,6 +1,7 @@
 package com.pyredevelopment.pongonline.gameobjects;
 
 import com.pyredevelopment.pongonline.PongEnv;
+import com.pyredevelopment.pongonline.game.GameManager;
 
 /**
  * This class represents the ball in the game of Pong.
@@ -24,8 +25,13 @@ public class PongBall {
      * @param y The vertical starting position of the PongBall.
      */
     public PongBall(double x, double y) {
+
+        // Initialize the starting values
         this.x = x;
         this.y = y;
+
+        // Register the ball with the GameManager
+        GameManager.get().register(this);
 
     }
 
