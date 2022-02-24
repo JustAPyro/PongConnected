@@ -23,10 +23,11 @@ public class PongBall {
      * @param x The horizontal starting position of the PongBall.
      * @param y The vertical starting position of the PongBall.
      */
-    public PongBall(double x, double y)
-    {
+    public PongBall(double x, double y) {
         this.x = x;
         this.y = y;
+
+        GameManager.get().register(this);
     }
 
     /**
@@ -45,16 +46,28 @@ public class PongBall {
         return y;
     }
 
+    /**
+     * Allows you to set the direction the ball is moving in degrees. 0 is directly north/up, 90 is right, and so on.
+     * @param direction The direction the ball is moving in degrees.
+     */
     public void setDirection(double direction) {
         this.direction = Math.toRadians(direction);
     }
 
+    /**
+     * Returns the direction the ball is moving in degrees, with 0 being directly up, and 90 being to the right.
+     * @return The direction of the ball in degrees.
+     */
     public double getDirection() {
         return Math.toDegrees(direction);
     }
 
+    /**
+     * Updates the position of the ball based on the PongBalls current variables.
+     */
     public void update() {
 
+        // Predict the new position
         double px = x + speed * Math.cos(direction - Math.PI/2);
         double py = y + speed * Math.sin(direction - Math.PI/2);
 
@@ -63,18 +76,20 @@ public class PongBall {
             setDirection(360-getDirection());
         }
         else if (px <= 0) {
+            // If we've hit the left wall
             setDirection(360-getDirection());
-
         }
         else if (py <= 0) {
+            // If we hit the top
             setDirection(180-getDirection());
         }
         else if (py >= PongEnv.WIN_HEIGHT) {
+            // If we hit the bottom
             setDirection(180-getDirection());
         }
 
-        x =x + speed * Math.cos(direction - Math.PI/2);
-        y =y + speed * Math.sin(direction - Math.PI/2);
+        x += speed * Math.cos(direction - Math.PI/2);
+        y += speed * Math.sin(direction - Math.PI/2);
 
 
     }

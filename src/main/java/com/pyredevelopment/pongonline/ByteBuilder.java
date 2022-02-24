@@ -6,10 +6,6 @@ public class ByteBuilder {
 
     private byte b;
 
-    public static void main(String[] args) {
-        Byte b = Byte.parseByte("", 2);
-    }
-
     // Returns a bitset containing the values in bytes.
     public static BitSet fromByteArray(byte[] bytes) {
         BitSet bits = new BitSet();
