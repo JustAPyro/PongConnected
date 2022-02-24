@@ -4,6 +4,7 @@ import com.pyredevelopment.pongonline.PongClient;
 import javafx.application.Application;
 
 public class ClientDriver {
+
     public static void main(String[] args) {
         Application.launch(PongClient.class, args);
     }
@@ -11,4 +12,5 @@ public class ClientDriver {
     public ClientDriver() {
         Application.launch(PongClient.class);
     }
+
 }

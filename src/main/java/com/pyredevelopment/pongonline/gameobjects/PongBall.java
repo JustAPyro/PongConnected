@@ -92,10 +92,22 @@ public class PongBall {
             // If we hit the bottom
             setDirection(180-getDirection());
         }
+        // Check for collisions with left paddle
+        else if ((px <= PongEnv.PADDLE_PADDING + ((double) PongEnv.PADDLE_WIDTH/2)) &&
+                py >= GameManager.get().getPaddlePos(1) - (double) PongEnv.PADDLE_HEIGHT/2 &&
+                py <= GameManager.get().getPaddlePos(1) + (double) PongEnv.PADDLE_HEIGHT/2) {
+            setDirection(360 - getDirection());
+        }
+        // Check for collisions with right paddle
+        else if ((px <= PongEnv.PADDLE_PADDING + ((double) PongEnv.PADDLE_WIDTH/2)) &&
+                py >= GameManager.get().getPaddlePos(2) - (double) PongEnv.PADDLE_HEIGHT/2 &&
+                py <= GameManager.get().getPaddlePos(2) + (double) PongEnv.PADDLE_HEIGHT/2) {
+            setDirection(360 - getDirection());
+        }
 
+        // Update the actual position.
         x += speed * Math.cos(direction - Math.PI/2);
         y += speed * Math.sin(direction - Math.PI/2);
-
 
     }
 

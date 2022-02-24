@@ -26,6 +26,15 @@ public class GameManager {
         return gm;
     }
 
+    public double getPaddlePos(int player) {
+        if (player == 1)
+            return player1.getPosition();
+        if (player == 2)
+            return player2.getPosition();
+
+        return 0;
+    }
+
 
     /**
      * Registers a paddle with the GameManager
