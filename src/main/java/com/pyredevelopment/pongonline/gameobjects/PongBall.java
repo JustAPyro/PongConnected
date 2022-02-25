@@ -99,7 +99,7 @@ public class PongBall {
             setDirection(360 - getDirection());
         }
         // Check for collisions with right paddle
-        else if ((px <= PongEnv.PADDLE_PADDING + ((double) PongEnv.PADDLE_WIDTH/2)) &&
+        else if ((px >= PongEnv.WIN_WIDTH - PongEnv.PADDLE_PADDING - ((double) PongEnv.PADDLE_WIDTH/2)) &&
                 py >= GameManager.get().getPaddlePos(2) - (double) PongEnv.PADDLE_HEIGHT/2 &&
                 py <= GameManager.get().getPaddlePos(2) + (double) PongEnv.PADDLE_HEIGHT/2) {
             setDirection(360 - getDirection());
