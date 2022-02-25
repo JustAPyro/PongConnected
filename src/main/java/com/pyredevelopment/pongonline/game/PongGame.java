@@ -17,7 +17,7 @@ public class PongGame implements Runnable {
 
     // These variables determine how often certain method calls happen in game loop
     private final static double UPS = 60; // Updates per second
-    private final static double PPS = 3;  // Pushes per second (Server)
+    private final static double PPS = 60;  // Pushes per second (Server)
 
     // Create a logger for this file to track its behavior.
     private final static Logger logger = LogManager.getLogger(PongGame.class);
@@ -205,13 +205,13 @@ public class PongGame implements Runnable {
             if (deltaU >= 1) {
                 ConcurrentHashMap<String, boolean[]> input = networkServer.getAllInput();
                 update(input);
-                networkServer.push(getState());
+
                 updates++;
                 deltaU--;
             }
 
             if (deltaP >= 1) {
-                //networkServer.push(getState());
+                networkServer.push(getState());
                 pushes++;
                 deltaP--;
             }

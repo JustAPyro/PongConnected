@@ -1,5 +1,6 @@
 package com.pyredevelopment.pongonline.gameobjects;
 
+import com.pyredevelopment.pongonline.PongEnv;
 import com.pyredevelopment.pongonline.game.GameManager;
 
 public class PongPaddle {
@@ -30,14 +31,14 @@ public class PongPaddle {
     }
 
     public void update(boolean[] inputs) {
-        boolean wPress = inputs[1];
-        boolean sPress = inputs[2];
+        boolean sPress = inputs[1];
+        boolean wPress = inputs[2];
 
         if (wPress ^ sPress) {
-            if (wPress)
-                position += speed;
-            if (sPress)
+            if (wPress && position - (double)PongEnv.PADDLE_HEIGHT/2 > 0)
                 position -= speed;
+            if (sPress && position + (double)PongEnv.PADDLE_HEIGHT/2 < PongEnv.WIN_HEIGHT)
+                position += speed;
         }
     }
 
